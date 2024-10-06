@@ -24,3 +24,18 @@ module.exports.getAllMessages = async (req, res, next) => {
  next(error);
 }
 };
+
+module.exports.getMessage = async (req, res, next) => {
+    try {
+        const {
+            params: { messageId },
+        } = req;
+        const message = await Message.findById(messageId);
+        if (!message) {
+            return next(new Error('Bad request')); 
+        }
+        res.status(200).send({ data: message });
+    } catch (error) {
+        next(error);
+    }
+};
