@@ -11,15 +11,15 @@ const messageSchema = new Schema({
         validate: {
             validator: (value) => contentSchema.isValid(value),
             message: (props) => `Error: ${props.value} is invalid content`
-            }
+        }
     },
     author: {
         login: {
             type: String,
             required: true,
             validate: {
-            validator: (value) => loginSchema.isValid(value),
-            message: (props) => `Error: ${props.value} login is invalid`
+                validator: (value) => loginSchema.isValid(value),
+                message: (props) => `Error: ${props.value} login is invalid`
             },
         },
         role: {
@@ -31,17 +31,19 @@ const messageSchema = new Schema({
         type: Date,
         default: Date.now(),
         validate: {
-        validator: (value) => isAfter(value, Date.now()),
+            validator: (value) => isAfter(value, Date.now()),
             message: (props) => `Error: ${props.value} is invalid datePublic`
         }
     },
     isRead: {
         type: Boolean,
-        default:false
+        default: false
 
     },
     isImportant: {
         type: Boolean
     },
-        timestamps:true
-})
+    timestamps: true
+});
+const Message = mongoose.model('Message', 'messageSchema');
+module.exports = Message;
