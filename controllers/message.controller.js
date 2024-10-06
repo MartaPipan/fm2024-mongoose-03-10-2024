@@ -32,10 +32,29 @@ module.exports.getMessage = async (req, res, next) => {
         } = req;
         const message = await Message.findById(messageId);
         if (!message) {
-            return next(new Error('Bad request')); 
+            return next(new Error('Mesage not found')); 
         }
         res.status(200).send({ data: message });
     } catch (error) {
         next(error);
     }
+};
+module.exports.updateMessage = async (req, res, next) => {
+    try {
+        const { params: { messageId }, body } = req;
+        const message = await Message.findByIdAndUpdate(messageId, body, { new: true });
+        if (!message) {
+            return next(new Error('Message not found'));
+        }
+        res.status(200).send({ data: message });
+} catch (error) {
+ next(error);
+}
+};
+
+module.exports.deleteMessage = async (req, res, next) => {
+try {
+} catch (error) {
+ next(error);
+}
 };
