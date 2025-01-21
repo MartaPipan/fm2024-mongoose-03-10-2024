@@ -1,0 +1,1 @@
+GET http://localhost:3000/messages/678f776be95833031c2e47c9/emotions HTTP/1.1

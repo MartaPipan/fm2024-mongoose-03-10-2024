@@ -9,6 +9,11 @@ const {
     deleteManyMessages
 } = require('./controllers/message.controller');
 
+const {
+    createEmotion,
+    getAllEmotions
+} = require('./controllers/emotion.controller');
+
 const app = express();
 app.use(express.json());
 
@@ -20,6 +25,9 @@ app.patch('/messages', updateMany);
 app.delete('/messages/:messageId', deleteMessage);
 app.delete('/messages', deleteManyMessages );  //add query paramentrs in Http como
 // DELETE http://localhost:3000/messages?author=login&isimportant=true&isread=true&visible=private HTTP/1.1
+
+app.post('/messages/:messageId/emotions', createEmotion);
+app.get('/messages/:messageId/emotions', getAllEmotions);
 
 app.use((err, req, res, next) => {
     console.log(err.message); 

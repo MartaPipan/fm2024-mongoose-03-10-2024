@@ -76,6 +76,7 @@ module.exports.deleteManyMessages = async (req, res, next) => {
           const {
             query //{author+isImportant}
           } = req;
+        const { author, isImportant, isRead, visible, datePublic } = query;
 // 1. Формуємо фільтр для запиту        
         const filter = {};
 
