@@ -1,6 +1,7 @@
 const Message = require('../models/Message');
 const Emotion = require('../models/Emotion');
 const _ = require("lodash");
+const { ms } = require('date-fns/locale');
 
 
 module.exports.createEmotion = async (req, res, next) => {
@@ -30,13 +31,13 @@ module.exports.createEmotion = async (req, res, next) => {
 module.exports.getAllEmotions = async (req, res, next) => {
     try {
         const {
-            params: { messageId},} = req;//->>params from getMessage,lesson121-2>>55min
+            params: { messageId: msgId},} = req;//->>params from getMessage,lesson121-2>>55min
         // Перевірка наявності повідомлення
-        const message = await Message.findById(messageId);
+        const message = await Message.findById(msgId);
         if (!message) {
             return next(new Error('Message not found'));
         }
-        const emotions = await Emotion.find().populate('messageId').exec();//in Model Emotion we have field MessageId !!!
+        const emotions = await Emotion.find({ messageId: msgId }).populate('messageId').exec();//in Model Emotion we have field MessageId !!!
         if (!emotions) {
             return next(new Error('Bad request'));
         }
@@ -45,4 +46,5 @@ module.exports.getAllEmotions = async (req, res, next) => {
         next(error);
     }
 };
+
 
