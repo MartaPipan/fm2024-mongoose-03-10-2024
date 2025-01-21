@@ -1,0 +1,7 @@
+PATCH http://localhost:3000/messages?datePublic=2025-01-01 HTTP/1.1
+Content-Type: application/json
+
+{
+    "isImportant": true,
+    "isRead": false
+}

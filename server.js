@@ -2,8 +2,12 @@ const http = require('http');
 const mongoose = require('mongoose');
 const app = require('./app');
 
+
+
 // Connect MongoDB at default port 27017.
 mongoose
+    // if exist administrator user, use 
+   // .connect('username:password@mongodb://localhost:27017/fm2024mongoose'})
     .connect('mongodb://localhost:27017/fm2024mongoose')
     .catch((err) => {
         console.log('Error in DB connection: ' + err);

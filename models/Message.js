@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { isAfter } = require('date-fns');
+const { isAfter, isToday } = require('date-fns');
 const { contentSchema, loginSchema } = require('../utils/validadionSchema');
 const { Schema } = mongoose;
 
@@ -28,9 +28,10 @@ const messageSchema = new Schema(
             },
         },
         datePublic: {
-            type: Date,
+          type: Date,
+            default: Date.now,
             validate: {
-                validator: (value) => isAfter(value, Date.now()),
+                validator: (value) => isToday(value) || isAfter(value, new Date()),
                 message: (props) => `Error: ${props.value} is invalid datePublic`,
             },
         },
