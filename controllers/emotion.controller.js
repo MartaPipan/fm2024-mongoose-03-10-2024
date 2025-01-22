@@ -1,7 +1,8 @@
-const Message = require('../models/Message');
-const Emotion = require('../models/Emotion');
+const mongoose = require('mongoose');
 const _ = require("lodash");
 const { ms } = require('date-fns/locale');
+const Message = require('../models/Message');
+const Emotion = require('../models/Emotion');
 
 
 module.exports.createEmotion = async (req, res, next) => {
@@ -21,6 +22,10 @@ module.exports.createEmotion = async (req, res, next) => {
         if (!emotion) {
             return next(new Error('Error creating emotion'));
         }
+        //add emotion to message
+        const emotionsArray = [...message.emotions, emotion._id];
+        await Message.findByIdAndUpdate(msgId, { emotions: emotionsArray }, { new: true });
+        
         res.status(201).send({ data: emotion });
     } catch (error) {
         next(error);
@@ -46,5 +51,3 @@ module.exports.getAllEmotions = async (req, res, next) => {
         next(error);
     }
 };
-
-

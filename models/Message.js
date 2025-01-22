@@ -46,6 +46,7 @@ const messageSchema = new Schema(
             type: String,
             enum: ['all', 'private']
         },
+        emotions: [{type: mongoose.Types.ObjectId, ref: "Emotion"}] //// emotions: [{}], but emotions is array
     },
     {
         timestamps: true,

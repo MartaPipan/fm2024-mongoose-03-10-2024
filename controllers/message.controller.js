@@ -1,4 +1,5 @@
 const Message = require('../models/Message');
+const Emotion = require('../models/Emotion');
 const _ = require("lodash");
 
 module.exports.createMessage  = async (req, res, next) => {
@@ -32,7 +33,9 @@ module.exports.getMessage = async (req, res, next) => {
         const {
             params: { messageId },
         } = req;
-        const message = await Message.findById(messageId);
+        //const message = await Message.findById(messageId).populate('emotions');//we return message with all info about message and all info about emotions / Lesson 122-1(25min)
+        //const message = await Message.findById(messageId).populate({path: 'emotions', select: ['name','createdAt']}).exec();//we return message with all info about message and emotion 'name' and 'createdAt' 
+        const message = await Message.findById(messageId).populate({path: 'emotions', select: 'name'}).exec();//we return message with all info about message and emotion 'name'
         if (!message) {
             return next(new Error('Message not found')); 
         }
@@ -64,6 +67,8 @@ module.exports.deleteMessage = async (req, res, next) => {
         if (!message) {
             return next(new Error('Mesage not found')); 
         }
+        //delete emotions with this message
+        await Emotion.deleteMany({ messageId: messageId }); 
         res.status(200).send({ data: message });
 } catch (error) {
  next(error);
@@ -73,47 +78,49 @@ module.exports.deleteMessage = async (req, res, next) => {
 
 module.exports.deleteManyMessages = async (req, res, next) => {
     try {
-          const {
-            query //{author+isImportant}
-          } = req;
+        const { params: { messageId }, query } = req;
         const { author, isImportant, isRead, visible, datePublic } = query;
-// 1. Формуємо фільтр для запиту        
+
+        // 1. Формуємо фільтр для запиту        
         const filter = {};
 
-        if (author in query) {
-            filter['author.login'] = queryauthor; // Перевіряємо, чи є 'author' у запиті, і додаємо до фільтру
+        if (query.author !== undefined) {
+            filter['author.login'] = query.author; // Фільтр за автором
         }
-           // Перевіряємо, чи є 'isImportant' у запиті, і додаємо до фільтру
-        if (query.isImportant === 'true' || isImportant === 'false') {
-            filter.isImportant = isImportant === 'true';
+        if (query.isImportant === 'true' || query.isImportant === 'false') {
+            filter.isImportant = query.isImportant === 'true'; // Фільтр за важливістю
         }
-        // Перевіряємо, чи є 'isRead' у запиті, і додаємо до фільтру
-        if (query.isRead === 'true' || isRead === 'false') {
-            filter.isRead = isRead === 'true';
+        if (query.isRead === 'true' || query.isRead === 'false') {
+            filter.isRead = query.isRead === 'true'; // Фільтр за станом прочитаності
         }
-
         if (query.datePublic) {
-            // Якщо є параметр datePublic, додаємо його до фільтру
             filter.datePublic = query.datePublic; // Фільтр за датою публікації
         }
-        
-        if (visible) {
-            filter.visible = visible;
+        if (query.visible === 'all' || query.visible === 'private') {
+            filter.visible = query.visible; // Фільтр за видимістю
         }
- // 2. Використовуємо deleteMany для видалення повідомлень за умовами фільтру
-        const result = await Message.deleteMany(filter);// Якщо жодне повідомлення не знайдено, повертаємо помилку
+
+        // 2. Видалення повідомлень за умовами фільтру
+        const result = await Message.deleteMany(filter);
+
         if (result.deletedCount === 0) {
             return next(new Error('No messages found for the given criteria'));
         }
-        // Відправляємо відповідь із кількістю видалених повідомлень
-        res.status(200).send({data:` message`});
+
+        // 3. Видалення пов'язаних емоцій
+        if (messageId) {
+            await Emotion.deleteMany({ messageId: messageId });
+        }
+
+        // 4. Відправлення відповіді
+        res.status(200).send({ data: `Deleted ${result.deletedCount} messages` });
     } catch (error) {
         next(error);
     }
 };
 
 
-module.exports.updateMany = async (req, res, next) => {
+module.exports.updateManyMessages = async (req, res, next) => {
     try {
         const {
             query, // Параметри фільтру для пошуку
@@ -134,6 +141,9 @@ module.exports.updateMany = async (req, res, next) => {
 
         if (query.isRead === 'true' || query.isRead === 'false') {
             filter.isRead = query.isRead === 'true'; // Фільтр за станом прочитаності
+        }
+        if (query.visible) {
+            filter.visible = query.visible;
         }
 
         // Оновлення повідомлень, які відповідають фільтру

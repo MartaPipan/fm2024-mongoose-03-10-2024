@@ -5,13 +5,15 @@ const {
     getMessage,
     updateMessage,
     deleteMessage,
-    updateMany,
-    deleteManyMessages
+    deleteManyMessages,
+    updateManyMessages
 } = require('./controllers/message.controller');
 
 const {
     createEmotion,
-    getAllEmotions
+    getAllEmotions,
+   // updateEmotion,
+   // deleteEmotion
 } = require('./controllers/emotion.controller');
 
 const app = express();
@@ -21,13 +23,15 @@ app.post('/messages', createMessage);
 app.get('/messages', getAllMessages);
 app.get('/messages/:messageId', getMessage);
 app.patch('/messages/:messageId', updateMessage);
-app.patch('/messages', updateMany);
+app.patch('/messages', updateManyMessages);
 app.delete('/messages/:messageId', deleteMessage);
 app.delete('/messages', deleteManyMessages );  //add query paramentrs in Http como
 // DELETE http://localhost:3000/messages?author=login&isimportant=true&isread=true&visible=private HTTP/1.1
 
 app.post('/messages/:messageId/emotions', createEmotion);
 app.get('/messages/:messageId/emotions', getAllEmotions);
+//app.patch('/messages/:messageId/emotions/:emotionId', updateEmotion);
+//app.delete('/messages/:messageId/emotions/:emotionId', deleteEmotion);
 
 app.use((err, req, res, next) => {
     console.log(err.message); 
