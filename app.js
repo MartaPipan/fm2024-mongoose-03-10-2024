@@ -12,7 +12,7 @@ const {
 const {
     createEmotion,
     getAllEmotions,
-   // updateEmotion,
+    updateEmotion,
    // deleteEmotion
 } = require('./controllers/emotion.controller');
 
@@ -30,7 +30,7 @@ app.delete('/messages', deleteManyMessages );  //add query paramentrs in Http co
 
 app.post('/messages/:messageId/emotions', createEmotion);
 app.get('/messages/:messageId/emotions', getAllEmotions);
-//app.patch('/messages/:messageId/emotions/:emotionId', updateEmotion);
+app.patch('/messages/:messageId/emotions/:emotionId', updateEmotion);
 //app.delete('/messages/:messageId/emotions/:emotionId', deleteEmotion);
 
 app.use((err, req, res, next) => {
