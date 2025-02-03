@@ -65,7 +65,7 @@ module.exports.updateEmotion = async (req, res, next) => {
         );
 
         if (!updatedEmotion) {
-            return next(new Error('Emotion not found or could not be updated'));
+            return next(new Error('Emotion not found'));
         }
 
         res.status(200).send({ data: updatedEmotion });

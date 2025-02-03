@@ -35,7 +35,7 @@ module.exports.getMessage = async (req, res, next) => {
         } = req;
         //const message = await Message.findById(messageId).populate('emotions');//we return message with all info about message and all info about emotions / Lesson 122-1(25min)
         //const message = await Message.findById(messageId).populate({path: 'emotions', select: ['name','createdAt']}).exec();//we return message with all info about message and emotion 'name' and 'createdAt' 
-        const message = await Message.findById(messageId).populate({path: 'emotions', select: 'name'}).exec();//we return message with all info about message and emotion 'name'
+        const message = await Message.findById(messageId).populate({path: 'emotions', select: 'name'}).exec();//we return message with all info about message and emotion 'name' / Lesson 122-1(33min)
         if (!message) {
             return next(new Error('Message not found')); 
         }
@@ -67,7 +67,7 @@ module.exports.deleteMessage = async (req, res, next) => {
         if (!message) {
             return next(new Error('Mesage not found')); 
         }
-        //delete emotions with this message
+        //delete emotions with this message / Lesson 122-1(25min)
         await Emotion.deleteMany({ messageId: messageId }); 
         res.status(200).send({ data: message });
 } catch (error) {
@@ -78,7 +78,7 @@ module.exports.deleteMessage = async (req, res, next) => {
 
 module.exports.deleteManyMessages = async (req, res, next) => {
     try {
-        const { params: { messageId }, query } = req;
+        const { query, params: { messageId } } = req;
         const { author, isImportant, isRead, visible, datePublic } = query;
 
         // 1. Формуємо фільтр для запиту        
@@ -147,7 +147,7 @@ module.exports.updateManyMessages = async (req, res, next) => {
         }
 
         // Оновлення повідомлень, які відповідають фільтру
-        const result = await Message.updateMany(filter, body, { new: true });
+        const result = await Message.updateMany(filter, body);//updateMany повертає об'єкт з кількістю змінених записів через modifiedCount,не використовуються опції, які вимагають повернення нових значень (new: true)
 
         if (result.matchedCount === 0) {
             return next(new Error('No messages found for the given criteria'));

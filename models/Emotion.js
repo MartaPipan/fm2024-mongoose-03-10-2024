@@ -18,6 +18,7 @@ const emotionSchema = new Schema(
       ],
         },
     messageId: {
+      required: true,
       type: mongoose.Types.ObjectId,
       ref: "Message",
     },
