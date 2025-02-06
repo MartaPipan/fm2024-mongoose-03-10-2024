@@ -1,10 +1,10 @@
-POST http://localhost:3000/messages HTTP/1.1
+POST http://localhost:8080/messages HTTP/1.1
 Content-Type: application/json
 
 {
     "content":"new message",
     "author":{
-        "login":"Olha",
+        "login":"Panas",
         "role":"user"
     },
     "datePublic":"2025-03-16",

@@ -8,13 +8,13 @@ const app = require('./app');
 mongoose
     // if exist administrator user, use 
    // .connect('username:password@mongodb://localhost:27017/fm2024mongoose'})
-    .connect('mongodb://localhost:27017/fm2024mongoose')
+    .connect('mongodb://172.17.0.2:27017/fm2024mongoose')
     .catch((err) => {
         console.log('Error in DB connection: ' + err);
         process.exit(1);
     });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3003;
 const server = http.createServer(app);
 
 server.listen(port, () => {

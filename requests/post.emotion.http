@@ -1,4 +1,4 @@
-POST http://localhost:3000/messages/67a1202be7965efb1c542ea1/emotions HTTP/1.1
+POST http://localhost:8080/messages/67a1202be7965efb1c542ea1/emotions HTTP/1.1
 Content-Type: application/json
 
 

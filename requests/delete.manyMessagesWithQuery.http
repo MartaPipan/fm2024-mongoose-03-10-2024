@@ -1,1 +1,1 @@
-DELETE http://localhost:3000/messages?author=login&isimportant=true&isread=true&visible=private HTTP/1.1
+DELETE http://localhost:8080/messages?author=login&isimportant=true&isread=true&visible=private HTTP/1.1
