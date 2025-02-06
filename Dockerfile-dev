@@ -1,0 +1,16 @@
+FROM node:20-alpine
+
+
+RUN mkdir /server
+
+WORKDIR /server
+
+COPY ./ ./
+
+RUN npm i
+
+# Відкриваємо порти (хоча в Docker це опціонально)
+EXPOSE 3000
+
+# Запускаємо застосунок
+CMD ["npm", "run", "start"]
