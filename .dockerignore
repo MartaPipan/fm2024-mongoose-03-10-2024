@@ -4,3 +4,4 @@
 .git/
 /request/
 .vscode/
+.example.env

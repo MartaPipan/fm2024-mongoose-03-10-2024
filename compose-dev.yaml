@@ -8,8 +8,9 @@ services:
       - ./:/server:ro
     ports:
       - "8080:3000"
-    environment:
-      - PORT=3000
+    env_file:
+      - ./.env  
+    #environment: - PORT=3000 (if not in .env)
     depends_on:
       - db_mongo
     restart: on-failure

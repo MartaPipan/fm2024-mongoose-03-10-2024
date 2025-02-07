@@ -1,0 +1,1 @@
+sudo docker compose --file ./compose-dev.yaml up --build --force-recreate
