@@ -4,7 +4,7 @@ Content-Type: application/json
 {
     "content":"new message",
     "author":{
-        "login":"Panas",
+        "login":"Petra",
         "role":"user"
     },
     "datePublic":"2025-03-16",

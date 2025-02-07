@@ -12,32 +12,14 @@ services:
     restart: on-failure      
     networks:
       - mongo-bridge-prodaction
-    configs:
-      - httpd-config
-    secrets:
-      - server-certificate
 
   db_mongo:
     image: mongo:latest
-    ports:
-      - "27017:27017"
     volumes:
-      - /home/marta/freshcode/db_backup_03_10:/data/db
+      - ~/backup:/data/db
     restart: always  
     networks:
       - mongo-bridge-prodaction
-
-volumes:
-  db-data:
-    driver: local
-
-configs:
-  httpd-config:
-    external: true
-
-secrets:
-  server-certificate:
-    external: true
 
 networks:
   mongo-bridge-prodaction: {}

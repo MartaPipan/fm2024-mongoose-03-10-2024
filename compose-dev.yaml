@@ -1,4 +1,4 @@
-name: fm2024-mongoose-03-10-2024
+name: mongoose-03-10-2024-dev
 services:
   back:
     build:
@@ -9,37 +9,20 @@ services:
     ports:
       - "8080:3000"
     environment:
-      - PORT=3003
+      - PORT=3000
     depends_on:
       - db_mongo
     restart: on-failure
     networks:
       - mongo-bridge-development
-    configs:
-      - httpd-config
-    secrets:
-      - server-certificate
-
+    
   db_mongo:
     image: mongo:latest
-    ports:
-      - "27017:27017"
     volumes:
-      - /home/marta/freshcode/db_mongo_03_10:/data/db
+      - ~/db_mongo:/data/db
+    restart: always  
     networks:
       - mongo-bridge-development
-
-volumes:
-  db-data:
-    driver: local
-
-configs:
-  httpd-config:
-    external: true
-
-secrets:
-  server-certificate:
-    external: true
 
 networks:
   mongo-bridge-development: {}
